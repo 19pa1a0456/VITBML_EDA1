@@ -1,0 +1,1309 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "crimes in port land oregon",
+      "provenance": [],
+      "collapsed_sections": [],
+      "toc_visible": true,
+      "authorship_tag": "ABX9TyMYJPY0YB3zw5TTD1O0LBbG",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/19pa1a0456/ai/blob/master/crimes_in_port_land_oregon\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "HZD9SJZi3jA4",
+        "colab_type": "text"
+      },
+      "source": [
+        "**CONTRIBUTORS**:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "6cHtWYau30ON",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "#G RAJ PRAKASH -19PA1A0456\n",
+        "#CH G.N.S.MANIKANTA - 19PA1A0431\n",
+        "#CH MANJUNADH REDDY - 19PA1A0422\n",
+        "#A.V.M.SAI - 19PA1A0414"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "dJG-lKbdEbFL",
+        "colab_type": "text"
+      },
+      "source": [
+        ""
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "DfdO9qACyoNq",
+        "colab_type": "text"
+      },
+      "source": [
+        "**INTRODUCTION** :   \n",
+        "This dataset describes crimes reported in the city of Portland Oregon between 1972 and October of 2018. Earlier data is much sparser so explorations will need to take that into mind when making historic comparisons."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "wTky_7nc0Rlv",
+        "colab_type": "text"
+      },
+      "source": [
+        "**Address** : place where crime took palce      \n",
+        "**Case Number** : number of case registered     \n",
+        "**Crime Against** : main reason to do the crime  \n",
+        "**Neighborhood** : one of the place in portland  \n",
+        "**Number of Records** :records of criminal  \n",
+        "**Occur Date** : date when crime occured   \n",
+        "**Occur Month Year** : month when crime occured  \n",
+        "**Occur Time** : time when crime occured  \n",
+        "**Offense Category** : which type of offense  \n",
+        "**Offense Count** : number of offenses  \n",
+        "**Offense Type** : what type of offence  \n",
+        "**OpenDataLat** : data on latitude  \n",
+        "**OpenDataLon** : data on longitudinal    \n",
+        "**OpenDataX** : locaiton of crime  \n",
+        "**OpenDataY** : location of crime  \n",
+        "**Report Date** : reported to cops on date  \n",
+        " **reportmonthyear** : reported on month  "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "eUaKCD_F4ong",
+        "colab_type": "text"
+      },
+      "source": [
+        "**READING DATA**:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "EEClXXlBCt8F",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "#importing pandas \n",
+        "import pandas as pd"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab_type": "code",
+        "outputId": "1d94402d-1893-4c36-82ff-22aa2d962d31",
+        "id": "tNTQAZ0ICMq1",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 947
+        }
+      },
+      "source": [
+        "#Read data from csv file\n",
+        "t=pd.read_csv(\"/content/Open_Data_Sheet_data.csv.zip\")\n",
+        "t"
+      ],
+      "execution_count": 258,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Case Number</th>\n",
+              "      <th>Crime Against</th>\n",
+              "      <th>Neighborhood</th>\n",
+              "      <th>Number of Records</th>\n",
+              "      <th>Occur Date</th>\n",
+              "      <th>Occur Month Year</th>\n",
+              "      <th>Occur Time</th>\n",
+              "      <th>Offense Category</th>\n",
+              "      <th>Offense Count</th>\n",
+              "      <th>Offense Type</th>\n",
+              "      <th>OpenDataLat</th>\n",
+              "      <th>OpenDataLon</th>\n",
+              "      <th>OpenDataX</th>\n",
+              "      <th>OpenDataY</th>\n",
+              "      <th>Report Date</th>\n",
+              "      <th>ReportMonthYear</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>3600 BLOCK OF SE KNAPP ST</td>\n",
+              "      <td>17-902332</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Eastmoreland</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/20/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.470545</td>\n",
+              "      <td>-122.625298</td>\n",
+              "      <td>7656952.0</td>\n",
+              "      <td>664817.0</td>\n",
+              "      <td>2/20/2017</td>\n",
+              "      <td>February 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>3600 BLOCK OF SE LAMBERT ST</td>\n",
+              "      <td>17-902346</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Eastmoreland</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/20/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>30</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.467028</td>\n",
+              "      <td>-122.625272</td>\n",
+              "      <td>7656925.0</td>\n",
+              "      <td>663535.0</td>\n",
+              "      <td>2/20/2017</td>\n",
+              "      <td>February 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>7200 BLOCK OF SE 32ND AVE</td>\n",
+              "      <td>17-902450</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Eastmoreland</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/21/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>2345</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.471859</td>\n",
+              "      <td>-122.630327</td>\n",
+              "      <td>7655675.0</td>\n",
+              "      <td>665330.0</td>\n",
+              "      <td>2/22/2017</td>\n",
+              "      <td>February 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>6500 BLOCK OF SE 32ND AVE</td>\n",
+              "      <td>17-902495</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Eastmoreland</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/21/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>2350</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.475196</td>\n",
+              "      <td>-122.630444</td>\n",
+              "      <td>7655677.0</td>\n",
+              "      <td>666547.0</td>\n",
+              "      <td>2/22/2017</td>\n",
+              "      <td>February 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>500 BLOCK OF N DIXON ST</td>\n",
+              "      <td>17-901848</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Eliot</td>\n",
+              "      <td>1</td>\n",
+              "      <td>12/21/2016</td>\n",
+              "      <td>12/1/2016</td>\n",
+              "      <td>1330</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.534551</td>\n",
+              "      <td>-122.671730</td>\n",
+              "      <td>7645672.0</td>\n",
+              "      <td>688462.0</td>\n",
+              "      <td>2/11/2017</td>\n",
+              "      <td>February 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>...</th>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>202547</th>\n",
+              "      <td>SE 3RD AVE / SE ALDER ST</td>\n",
+              "      <td>17-904237</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Buckman West</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3/25/2017</td>\n",
+              "      <td>3/1/2017</td>\n",
+              "      <td>2330</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.517950</td>\n",
+              "      <td>-122.662774</td>\n",
+              "      <td>7647804.0</td>\n",
+              "      <td>682350.0</td>\n",
+              "      <td>3/28/2017</td>\n",
+              "      <td>March 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>202548</th>\n",
+              "      <td>1000 BLOCK OF SE MORRISON ST</td>\n",
+              "      <td>17-904282</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Buckman West</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3/28/2017</td>\n",
+              "      <td>3/1/2017</td>\n",
+              "      <td>200</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.517253</td>\n",
+              "      <td>-122.655173</td>\n",
+              "      <td>7649745.0</td>\n",
+              "      <td>682044.0</td>\n",
+              "      <td>3/29/2017</td>\n",
+              "      <td>March 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>202549</th>\n",
+              "      <td>100 BLOCK OF SE STARK ST</td>\n",
+              "      <td>17-904261</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Buckman West</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3/29/2017</td>\n",
+              "      <td>3/1/2017</td>\n",
+              "      <td>610</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.519425</td>\n",
+              "      <td>-122.664286</td>\n",
+              "      <td>7647431.0</td>\n",
+              "      <td>682898.0</td>\n",
+              "      <td>3/29/2017</td>\n",
+              "      <td>March 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>202550</th>\n",
+              "      <td>1100 BLOCK OF SE 6TH AVE</td>\n",
+              "      <td>17-904274</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Buckman West</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3/28/2017</td>\n",
+              "      <td>3/1/2017</td>\n",
+              "      <td>1800</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.514730</td>\n",
+              "      <td>-122.659690</td>\n",
+              "      <td>7648563.0</td>\n",
+              "      <td>681155.0</td>\n",
+              "      <td>3/29/2017</td>\n",
+              "      <td>March 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>202551</th>\n",
+              "      <td>14900 BLOCK OF SE WOODWARD ST</td>\n",
+              "      <td>17-61925</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Centennial</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/28/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>2100</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.500937</td>\n",
+              "      <td>-122.509281</td>\n",
+              "      <td>7686980.0</td>\n",
+              "      <td>675133.0</td>\n",
+              "      <td>3/1/2017</td>\n",
+              "      <td>March 2017</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>202552 rows × 17 columns</p>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                              Address Case Number  ... Report Date ReportMonthYear\n",
+              "0           3600 BLOCK OF SE KNAPP ST   17-902332  ...   2/20/2017   February 2017\n",
+              "1         3600 BLOCK OF SE LAMBERT ST   17-902346  ...   2/20/2017   February 2017\n",
+              "2           7200 BLOCK OF SE 32ND AVE   17-902450  ...   2/22/2017   February 2017\n",
+              "3           6500 BLOCK OF SE 32ND AVE   17-902495  ...   2/22/2017   February 2017\n",
+              "4             500 BLOCK OF N DIXON ST   17-901848  ...   2/11/2017   February 2017\n",
+              "...                               ...         ...  ...         ...             ...\n",
+              "202547       SE 3RD AVE / SE ALDER ST   17-904237  ...   3/28/2017      March 2017\n",
+              "202548   1000 BLOCK OF SE MORRISON ST   17-904282  ...   3/29/2017      March 2017\n",
+              "202549       100 BLOCK OF SE STARK ST   17-904261  ...   3/29/2017      March 2017\n",
+              "202550       1100 BLOCK OF SE 6TH AVE   17-904274  ...   3/29/2017      March 2017\n",
+              "202551  14900 BLOCK OF SE WOODWARD ST    17-61925  ...    3/1/2017      March 2017\n",
+              "\n",
+              "[202552 rows x 17 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 258
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "HaUsNkgN49q_",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "YKAGsCk24_UK",
+        "colab_type": "text"
+      },
+      "source": [
+        "**QUESTIONS**:"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "pds8thiY6F0W",
+        "colab_type": "text"
+      },
+      "source": [
+        "1) What is the shape of your dataset ?\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "mkz4GkTPDR61",
+        "colab_type": "text"
+      },
+      "source": [
+        "2)How do you access data elements from the data set ? "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "1qHvp_LXDnwR",
+        "colab_type": "text"
+      },
+      "source": [
+        "3)How do you access a particular data element from the dataset ? "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "GAZNyvrQEDQz",
+        "colab_type": "text"
+      },
+      "source": [
+        "4)How do you access the 1st,100th,1000th rows from the dataset ?"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ddor0M6h59zv",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "b_xyvSl9DwjQ",
+        "colab_type": "text"
+      },
+      "source": [
+        "**Checking Data Dimensions**   \n",
+        "     Use the shape method  on data frame to get the dimensions\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "EYX8qU--HAMr",
+        "colab_type": "code",
+        "outputId": "c4de660a-e18d-43c9-db87-775200c64204",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 33
+        }
+      },
+      "source": [
+        "print(t.shape)"
+      ],
+      "execution_count": 259,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "(202552, 17)\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Gywqj0rxnS30",
+        "colab_type": "code",
+        "outputId": "8563f0d8-2005-45fc-c4be-90e57a445139",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 365
+        }
+      },
+      "source": [
+        "#getting top three rows \n",
+        "t.head(3)"
+      ],
+      "execution_count": 260,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Case Number</th>\n",
+              "      <th>Crime Against</th>\n",
+              "      <th>Neighborhood</th>\n",
+              "      <th>Number of Records</th>\n",
+              "      <th>Occur Date</th>\n",
+              "      <th>Occur Month Year</th>\n",
+              "      <th>Occur Time</th>\n",
+              "      <th>Offense Category</th>\n",
+              "      <th>Offense Count</th>\n",
+              "      <th>Offense Type</th>\n",
+              "      <th>OpenDataLat</th>\n",
+              "      <th>OpenDataLon</th>\n",
+              "      <th>OpenDataX</th>\n",
+              "      <th>OpenDataY</th>\n",
+              "      <th>Report Date</th>\n",
+              "      <th>ReportMonthYear</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>3600 BLOCK OF SE KNAPP ST</td>\n",
+              "      <td>17-902332</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Eastmoreland</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/20/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.470545</td>\n",
+              "      <td>-122.625298</td>\n",
+              "      <td>7656952.0</td>\n",
+              "      <td>664817.0</td>\n",
+              "      <td>2/20/2017</td>\n",
+              "      <td>February 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>3600 BLOCK OF SE LAMBERT ST</td>\n",
+              "      <td>17-902346</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Eastmoreland</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/20/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>30</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.467028</td>\n",
+              "      <td>-122.625272</td>\n",
+              "      <td>7656925.0</td>\n",
+              "      <td>663535.0</td>\n",
+              "      <td>2/20/2017</td>\n",
+              "      <td>February 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>7200 BLOCK OF SE 32ND AVE</td>\n",
+              "      <td>17-902450</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Eastmoreland</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/21/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>2345</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.471859</td>\n",
+              "      <td>-122.630327</td>\n",
+              "      <td>7655675.0</td>\n",
+              "      <td>665330.0</td>\n",
+              "      <td>2/22/2017</td>\n",
+              "      <td>February 2017</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                       Address Case Number  ... Report Date ReportMonthYear\n",
+              "0    3600 BLOCK OF SE KNAPP ST   17-902332  ...   2/20/2017   February 2017\n",
+              "1  3600 BLOCK OF SE LAMBERT ST   17-902346  ...   2/20/2017   February 2017\n",
+              "2    7200 BLOCK OF SE 32ND AVE   17-902450  ...   2/22/2017   February 2017\n",
+              "\n",
+              "[3 rows x 17 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 260
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "QOzawtzFnpab",
+        "colab_type": "code",
+        "outputId": "34509310-af24-4c5f-a4c8-f2efe44e0d1c",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 348
+        }
+      },
+      "source": [
+        "##getting bottom three rows using tial method\n",
+        "t.tail(3)"
+      ],
+      "execution_count": 261,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Case Number</th>\n",
+              "      <th>Crime Against</th>\n",
+              "      <th>Neighborhood</th>\n",
+              "      <th>Number of Records</th>\n",
+              "      <th>Occur Date</th>\n",
+              "      <th>Occur Month Year</th>\n",
+              "      <th>Occur Time</th>\n",
+              "      <th>Offense Category</th>\n",
+              "      <th>Offense Count</th>\n",
+              "      <th>Offense Type</th>\n",
+              "      <th>OpenDataLat</th>\n",
+              "      <th>OpenDataLon</th>\n",
+              "      <th>OpenDataX</th>\n",
+              "      <th>OpenDataY</th>\n",
+              "      <th>Report Date</th>\n",
+              "      <th>ReportMonthYear</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>202549</th>\n",
+              "      <td>100 BLOCK OF SE STARK ST</td>\n",
+              "      <td>17-904261</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Buckman West</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3/29/2017</td>\n",
+              "      <td>3/1/2017</td>\n",
+              "      <td>610</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.519425</td>\n",
+              "      <td>-122.664286</td>\n",
+              "      <td>7647431.0</td>\n",
+              "      <td>682898.0</td>\n",
+              "      <td>3/29/2017</td>\n",
+              "      <td>March 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>202550</th>\n",
+              "      <td>1100 BLOCK OF SE 6TH AVE</td>\n",
+              "      <td>17-904274</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Buckman West</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3/28/2017</td>\n",
+              "      <td>3/1/2017</td>\n",
+              "      <td>1800</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.514730</td>\n",
+              "      <td>-122.659690</td>\n",
+              "      <td>7648563.0</td>\n",
+              "      <td>681155.0</td>\n",
+              "      <td>3/29/2017</td>\n",
+              "      <td>March 2017</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>202551</th>\n",
+              "      <td>14900 BLOCK OF SE WOODWARD ST</td>\n",
+              "      <td>17-61925</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Centennial</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2/28/2017</td>\n",
+              "      <td>2/1/2017</td>\n",
+              "      <td>2100</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.500937</td>\n",
+              "      <td>-122.509281</td>\n",
+              "      <td>7686980.0</td>\n",
+              "      <td>675133.0</td>\n",
+              "      <td>3/1/2017</td>\n",
+              "      <td>March 2017</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                              Address Case Number  ... Report Date ReportMonthYear\n",
+              "202549       100 BLOCK OF SE STARK ST   17-904261  ...   3/29/2017      March 2017\n",
+              "202550       1100 BLOCK OF SE 6TH AVE   17-904274  ...   3/29/2017      March 2017\n",
+              "202551  14900 BLOCK OF SE WOODWARD ST    17-61925  ...    3/1/2017      March 2017\n",
+              "\n",
+              "[3 rows x 17 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 261
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "skUKFTU9n7Xq",
+        "colab_type": "code",
+        "outputId": "60d6685e-d4fc-4660-9a72-c17c7bcb5402",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 115
+        }
+      },
+      "source": [
+        "##columns gives column names\n",
+        "print(t.columns)"
+      ],
+      "execution_count": 262,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "Index(['Address', 'Case Number', 'Crime Against', 'Neighborhood',\n",
+            "       'Number of Records', 'Occur Date', 'Occur Month Year', 'Occur Time',\n",
+            "       'Offense Category', 'Offense Count', 'Offense Type', 'OpenDataLat',\n",
+            "       'OpenDataLon', 'OpenDataX', 'OpenDataY', 'Report Date',\n",
+            "       'ReportMonthYear'],\n",
+            "      dtype='object')\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "v7Yam0LgoKV5",
+        "colab_type": "code",
+        "outputId": "a52d9803-82b8-4351-9025-03e7b0b5c7dd",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 310
+        }
+      },
+      "source": [
+        "##dtypes  gives data types for each column\n",
+        "print(t.dtypes)"
+      ],
+      "execution_count": 263,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "Address               object\n",
+            "Case Number           object\n",
+            "Crime Against         object\n",
+            "Neighborhood          object\n",
+            "Number of Records      int64\n",
+            "Occur Date            object\n",
+            "Occur Month Year      object\n",
+            "Occur Time             int64\n",
+            "Offense Category      object\n",
+            "Offense Count          int64\n",
+            "Offense Type          object\n",
+            "OpenDataLat          float64\n",
+            "OpenDataLon          float64\n",
+            "OpenDataX            float64\n",
+            "OpenDataY            float64\n",
+            "Report Date           object\n",
+            "ReportMonthYear       object\n",
+            "dtype: object\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "enFu2qOon7WC",
+        "colab_type": "code",
+        "outputId": "9d1ec5ac-fb0b-4a3e-9425-38d88d55c9a8",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 147
+        }
+      },
+      "source": [
+        "t.median()"
+      ],
+      "execution_count": 264,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Number of Records    1.000000e+00\n",
+              "Occur Time           1.430000e+03\n",
+              "Offense Count        1.000000e+00\n",
+              "OpenDataLat          4.552296e+01\n",
+              "OpenDataLon         -1.226410e+02\n",
+              "OpenDataX            7.653437e+06\n",
+              "OpenDataY            6.841190e+05\n",
+              "dtype: float64"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 264
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "2zF5dWWQJ6Yl",
+        "colab_type": "code",
+        "outputId": "a6e8e83a-0d7a-4769-c9a4-d5a183b74290",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 177
+        }
+      },
+      "source": [
+        "t.mode()"
+      ],
+      "execution_count": 265,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Case Number</th>\n",
+              "      <th>Crime Against</th>\n",
+              "      <th>Neighborhood</th>\n",
+              "      <th>Number of Records</th>\n",
+              "      <th>Occur Date</th>\n",
+              "      <th>Occur Month Year</th>\n",
+              "      <th>Occur Time</th>\n",
+              "      <th>Offense Category</th>\n",
+              "      <th>Offense Count</th>\n",
+              "      <th>Offense Type</th>\n",
+              "      <th>OpenDataLat</th>\n",
+              "      <th>OpenDataLon</th>\n",
+              "      <th>OpenDataX</th>\n",
+              "      <th>OpenDataY</th>\n",
+              "      <th>Report Date</th>\n",
+              "      <th>ReportMonthYear</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>UNKNOWN ADDRESS</td>\n",
+              "      <td>16-X4668084</td>\n",
+              "      <td>Property</td>\n",
+              "      <td>Downtown</td>\n",
+              "      <td>1</td>\n",
+              "      <td>11/10/2016</td>\n",
+              "      <td>1/1/2018</td>\n",
+              "      <td>1200</td>\n",
+              "      <td>Larceny Offenses</td>\n",
+              "      <td>1</td>\n",
+              "      <td>Theft From Motor Vehicle</td>\n",
+              "      <td>45.530959</td>\n",
+              "      <td>-122.558154</td>\n",
+              "      <td>7674732.0</td>\n",
+              "      <td>687330.0</td>\n",
+              "      <td>10/24/2016</td>\n",
+              "      <td>January 2018</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "           Address  Case Number  ... Report Date ReportMonthYear\n",
+              "0  UNKNOWN ADDRESS  16-X4668084  ...  10/24/2016    January 2018\n",
+              "\n",
+              "[1 rows x 17 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 265
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "QW6xsooZKD6v",
+        "colab_type": "text"
+      },
+      "source": [
+        "**Summmary statistics**:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "AALQyNHtKfAV",
+        "colab_type": "code",
+        "outputId": "03b7899f-e499-4b48-f1ce-a33f20d2ae3b",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 277
+        }
+      },
+      "source": [
+        "t.describe()"
+      ],
+      "execution_count": 266,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Number of Records</th>\n",
+              "      <th>Occur Time</th>\n",
+              "      <th>Offense Count</th>\n",
+              "      <th>OpenDataLat</th>\n",
+              "      <th>OpenDataLon</th>\n",
+              "      <th>OpenDataX</th>\n",
+              "      <th>OpenDataY</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>count</th>\n",
+              "      <td>202552.0</td>\n",
+              "      <td>202552.000000</td>\n",
+              "      <td>202552.000000</td>\n",
+              "      <td>180195.000000</td>\n",
+              "      <td>180195.000000</td>\n",
+              "      <td>1.801950e+05</td>\n",
+              "      <td>180195.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>mean</th>\n",
+              "      <td>1.0</td>\n",
+              "      <td>1326.991148</td>\n",
+              "      <td>1.001358</td>\n",
+              "      <td>45.525461</td>\n",
+              "      <td>-122.626833</td>\n",
+              "      <td>7.657088e+06</td>\n",
+              "      <td>684849.454835</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>std</th>\n",
+              "      <td>0.0</td>\n",
+              "      <td>694.101366</td>\n",
+              "      <td>0.059730</td>\n",
+              "      <td>0.032453</td>\n",
+              "      <td>0.064391</td>\n",
+              "      <td>1.641255e+04</td>\n",
+              "      <td>11956.063624</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>min</th>\n",
+              "      <td>1.0</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>45.272726</td>\n",
+              "      <td>-123.191188</td>\n",
+              "      <td>7.514511e+06</td>\n",
+              "      <td>593155.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>25%</th>\n",
+              "      <td>1.0</td>\n",
+              "      <td>830.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>45.505199</td>\n",
+              "      <td>-122.677710</td>\n",
+              "      <td>7.644097e+06</td>\n",
+              "      <td>677341.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>50%</th>\n",
+              "      <td>1.0</td>\n",
+              "      <td>1430.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>45.522962</td>\n",
+              "      <td>-122.641009</td>\n",
+              "      <td>7.653437e+06</td>\n",
+              "      <td>684119.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>75%</th>\n",
+              "      <td>1.0</td>\n",
+              "      <td>1906.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>45.539556</td>\n",
+              "      <td>-122.574091</td>\n",
+              "      <td>7.670497e+06</td>\n",
+              "      <td>689978.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>max</th>\n",
+              "      <td>1.0</td>\n",
+              "      <td>2359.000000</td>\n",
+              "      <td>16.000000</td>\n",
+              "      <td>45.701742</td>\n",
+              "      <td>-122.377894</td>\n",
+              "      <td>7.719955e+06</td>\n",
+              "      <td>750169.000000</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "       Number of Records     Occur Time  ...     OpenDataX      OpenDataY\n",
+              "count           202552.0  202552.000000  ...  1.801950e+05  180195.000000\n",
+              "mean                 1.0    1326.991148  ...  7.657088e+06  684849.454835\n",
+              "std                  0.0     694.101366  ...  1.641255e+04   11956.063624\n",
+              "min                  1.0       0.000000  ...  7.514511e+06  593155.000000\n",
+              "25%                  1.0     830.000000  ...  7.644097e+06  677341.000000\n",
+              "50%                  1.0    1430.000000  ...  7.653437e+06  684119.000000\n",
+              "75%                  1.0    1906.000000  ...  7.670497e+06  689978.000000\n",
+              "max                  1.0    2359.000000  ...  7.719955e+06  750169.000000\n",
+              "\n",
+              "[8 rows x 7 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 266
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "GrYxp0WVKjxZ",
+        "colab_type": "text"
+      },
+      "source": [
+        "**Histogram graph**:"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9xB7noW8PPwv",
+        "colab_type": "code",
+        "outputId": "06af20c3-3eca-4b04-f0cc-4d0f9203ceaf",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 265
+        }
+      },
+      "source": [
+        "t=t.plot(x=(\"Occur Time\"),y=(\"Offense Count\"),kind=\"hist\")"
+      ],
+      "execution_count": 267,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "iVBORw0KGgoAAAANSUhEUgAAAZgAAAD4CAYAAADRuPC7AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz\nAAALEgAACxIB0t1+/AAAADh0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uMy4xLjMsIGh0\ndHA6Ly9tYXRwbG90bGliLm9yZy+AADFEAAAf30lEQVR4nO3de5QV5Znv8e9vGhCNF7x0iIeLEEUn\niNJCq5wYkigjgjGiLseBlRNaxyUacSaeMUaMrjHxkmBMgtGjGFQOkBhB8QInwUFCNJqsoIAictHQ\nEpQm3AIqjkQUeM4f+22yaXZ3b7Rr7wZ+n7VqddVT71v1FNg+1Fvv3qWIwMzMrKX9Q7kTMDOzvZML\njJmZZcIFxszMMuECY2ZmmXCBMTOzTLQpdwKtxRFHHBHdunUrdxpmZnuU+fPn/zUiKgvtc4FJunXr\nxrx588qdhpnZHkXSm43t8xCZmZllwgXGzMwy4QJjZmaZ8DMYMyubjz76iLq6Oj744INyp2LNaN++\nPZ07d6Zt27ZF93GBMbOyqaur46CDDqJbt25IKnc61oiIYMOGDdTV1dG9e/ei+3mIzMzK5oMPPuDw\nww93cWnlJHH44Yfv9p2mC4yZlZWLy57h4/w9ucCYmVkmMnsGI6kLMAnoCAQwLiJ+KukwYArQDVgB\nXBQRbytXHn8KnA1sBi6OiJfSsWqAG9Ohb42IiSneF5gA7A/MAL4ZEdHYObK6VjNrGd1G/bpFj7di\n9FeabVNXV8fIkSNZsmQJ27dv55xzzuGOO+6gXbt2AAwbNozFixdzySWXMHjwYIYOHYokpk6dytFH\nH92i+TZlzZo1XH311cydO5cOHTrQsWNH7rzzTo499tgWO8ezzz5Lu3bt+PznP98ix8vyIf9W4JqI\neEnSQcB8SbOAi4HZETFa0ihgFHAdMBjokZZTgbHAqalY3ARUkytU8yVNTwVjLHAZ8AK5AjMIeCod\ns9A5MtHSvxS7o5hfIDMrLCK44IIL+MY3vsG0adPYtm0bI0aM4IYbbuCOO+5gzZo1zJ07l9raWgBG\njx7NhRdeyI033tjMkVs+z/PPP5+amhomT54MwCuvvMLatWtbvMAceOCBLVZgMhsii4jV9XcgEfEe\nsBToBAwBJqZmE4Hz0voQYFLkzAE6SDoSOAuYFREbU1GZBQxK+w6OiDmRey3npAbHKnQOM7Mdfvvb\n39K+fXsuueQSACoqKhgzZgzjx49n8+bNDBw4kFWrVlFVVcX3vvc97rzzTsaOHcvpp58OwC9+8QtO\nOeUUqqqquPzyy9m2bRsABx54IDfccAO9e/emX79+rF27FoBHH32UXr160bt3b774xS8CsG3bNq69\n9lpOPvlkTjzxRH72s5/tkuczzzxD27ZtueKKK3bEevfuTf/+/YkIrr32Wnr16sUJJ5zAlClTgFyx\nOOecc3a0v+qqq5gwYQKQ+2qsm266iT59+nDCCSfw2muvsWLFCu677z7GjBlDVVUVzz///Cf+8y3J\nNGVJ3YCTyN1pdIyI1WnXGnJDaJArPivzutWlWFPxugJxmjhHw7xGACMAunbtuptXZWZ7usWLF9O3\nb9+dYgcffDBdu3altraW6dOnc84557BgwQIgdydx4IEH8q1vfYulS5cyZcoU/vCHP9C2bVuuvPJK\nHnroIYYPH877779Pv379uO222/j2t7/N/fffz4033sjNN9/MzJkz6dSpE++88w4ADz74IIcccghz\n585ly5YtnHbaaQwcOHCn6cCLFi3aJc96jz/+OAsWLOCVV17hr3/9KyeffPKO4tWUI444gpdeeol7\n772XH/3oRzzwwANcccUVO66vJWT+kF/SgcBjwNURsSl/X7rziCzP39Q5ImJcRFRHRHVlZcEvAzUz\nK2j27NnMnz+fk08+maqqKmbPns3y5csBaNeu3Y67h759+7JixQoATjvtNC6++GLuv//+HXc7Tz/9\nNJMmTaKqqopTTz2VDRs2sGzZsqLz+P3vf8+wYcOoqKigY8eOfOlLX2Lu3LnN9rvgggt2ya+lZXoH\nI6ktueLyUEQ8nsJrJR0ZEavTMNe6FF8FdMnr3jnFVgFfbhB/NsU7F2jf1DnMzHbo2bMnU6dO3Sm2\nadMm3nrrLY455hjWrWv8fx0RQU1NDT/4wQ922de2bdsd03orKirYunUrAPfddx8vvPACv/71r+nb\nty/z588nIrj77rs566yzGj3X8ccfv0uezWnTpg3bt2/fsd3wMyz77bffLvm1tMzuYNKssAeBpRHx\nk7xd04GatF4DTMuLD1dOP+DdNMw1Exgo6VBJhwIDgZlp3yZJ/dK5hjc4VqFzmJntMGDAADZv3syk\nSZOA3POQa665hosvvpgDDjig2b5Tp07dUYQ2btzIm282+s31ALzxxhuceuqp3HzzzVRWVrJy5UrO\n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\n",
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "D_VCAqRaEl5k",
+        "colab_type": "text"
+      },
+      "source": [
+        "**CONCLUSION**:"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "SVHEpUF1ErTY",
+        "colab_type": "text"
+      },
+      "source": [
+        "From the insights,we can conclude that.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "uuVDTWULMqbR",
+        "colab_type": "text"
+      },
+      "source": [
+        "The mojority of specimens who commited crimes\n",
+        "are mostly in night times."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "OFYA8LneN3PA",
+        "colab_type": "text"
+      },
+      "source": [
+        "Most of the thefts are doing crimes by using\n",
+        "motor vehicle as a source."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "YMilBjv3NQU-",
+        "colab_type": "text"
+      },
+      "source": [
+        "certainly there is drop in crime by taking \n",
+        "immediate actions by the portland officers."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "86vwgPc4OLRt",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 0,
+      "outputs": []
+    }
+  ]
+}
